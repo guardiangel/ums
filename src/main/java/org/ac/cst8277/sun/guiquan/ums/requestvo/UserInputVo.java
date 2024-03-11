@@ -7,6 +7,9 @@ import java.util.Set;
 
 @Data
 public class UserInputVo implements Serializable {
+
+    private String id;
+
     private String name;
 
     private String email;

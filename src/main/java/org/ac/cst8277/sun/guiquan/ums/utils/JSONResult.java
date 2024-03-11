@@ -121,6 +121,15 @@ public class JSONResult<T> implements Serializable {
         return instance;
     }
 
+    public JSONResult<T> success(int code, String msg, T obj) {
+        JSONResult<T> instance = new JSONResult<>();
+        instance.setSuccess(true);
+        instance.setCode(String.valueOf(code));
+        instance.setMessage(msg);
+        instance.setData(obj);
+        return instance;
+    }
+
     public JSONResult<T> error(int code, String msg) {
         JSONResult<T> instance = new JSONResult<>();
         instance.setSuccess(false);

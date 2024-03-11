@@ -61,7 +61,7 @@ public class UserManagementService {
         return userTokenEntity != null;
     }
 
-    public boolean saveCascade(UserInputVo userInputVo) {
+    public UserEntity saveCascade(UserInputVo userInputVo) {
 
         UserEntity userEntity = new UserEntity();
         Set<RoleEntity> roleEntities = new HashSet<>();
@@ -75,11 +75,20 @@ public class UserManagementService {
 
         userEntity.setRoles(roleEntities);*/
         try {
-            userManagementRepository.save(userEntity);
-            return true;
+            userEntity = userManagementRepository.save(userEntity);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        return userEntity;
+    }
 
+    public boolean deleteCascade(UserInputVo userInputVo) {
+        Optional<UserEntity> userEntityOptional = userManagementRepository.findById(userInputVo.getId());
+        if (userEntityOptional.isPresent()) {
+            userManagementRepository.delete(userEntityOptional.get());
+            return true;
+        } else {
+            throw new RuntimeException("Can't find the user with id:" + userInputVo.getId());
+        }
     }
 }

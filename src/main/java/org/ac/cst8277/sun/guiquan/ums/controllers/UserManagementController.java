@@ -65,12 +65,12 @@ public class UserManagementController {
                                          @RequestBody UserInputVo userInputVo) {
 
         userInputVo.setCreated(new Date().getTime());
-        System.err.println(new Date().getTime());
         boolean flag = userManagementService.verifyToken(token);
         if (flag) {
             try {
-                boolean addNewUserFlag = userManagementService.saveCascade(userInputVo);
-                return jsonResult.success(HttpStatus.OK.value(), "Add a new user successfully.");
+                UserEntity userEntity = userManagementService.saveCascade(userInputVo);
+                return jsonResult.success(HttpStatus.OK.value(),
+                        "Add a new user successfully.", userEntity);
             } catch (RuntimeException e) {
                 return jsonResult.error(HttpStatus.BAD_GATEWAY.value(),
                         e.getMessage());
@@ -81,4 +81,24 @@ public class UserManagementController {
         }
     }
 
+    @DeleteMapping("/deleteUser")
+    public JSONResult<Object> deleteUser(@RequestHeader("token") String token,
+                                         @RequestBody UserInputVo userInputVo) {
+
+        boolean flag = userManagementService.verifyToken(token);
+        if (flag) {
+            try {
+                userManagementService.deleteCascade(userInputVo);
+                return jsonResult.success(HttpStatus.OK.value(),
+                        "Delete the user with id " + userInputVo.getId() + " successfully.");
+            } catch (RuntimeException e) {
+                return jsonResult.error(HttpStatus.FAILED_DEPENDENCY.value(),
+                        "Can't delete the user, the reason is:" + e.getMessage());
+            }
+
+        } else {
+            return jsonResult.error(HttpStatus.UNAUTHORIZED.value(),
+                    "The current token is not valid. can't add a new user.");
+        }
+    }
 }
