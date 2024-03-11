@@ -1,16 +1,18 @@
 package org.ac.cst8277.sun.guiquan.ums.services;
 
 import jakarta.annotation.Resource;
+import org.ac.cst8277.sun.guiquan.ums.entities.RoleEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserTokenEntity;
+import org.ac.cst8277.sun.guiquan.ums.repositories.RoleRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserManagementRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserTokenRepository;
+import org.ac.cst8277.sun.guiquan.ums.requestvo.UserInputVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service("userManagementService")
 public class UserManagementService {
@@ -20,9 +22,17 @@ public class UserManagementService {
     @Resource(name = "userTokenRepository")
     private UserTokenRepository userTokenRepository;
 
+    @Resource(name = "roleRepository")
+    private RoleRepository roleRepository;
+
     public List<UserEntity> getAllUser() {
         List<UserEntity> userEntities = userManagementRepository.getAllUser();
         return userEntities;
+    }
+
+    public List<RoleEntity> getAllRoles() {
+        List<RoleEntity> roleEntities = (List<RoleEntity>) roleRepository.findAll();
+        return roleEntities;
     }
 
     /**
@@ -51,4 +61,25 @@ public class UserManagementService {
         return userTokenEntity != null;
     }
 
+    public boolean saveCascade(UserInputVo userInputVo) {
+
+        UserEntity userEntity = new UserEntity();
+        Set<RoleEntity> roleEntities = new HashSet<>();
+        BeanUtils.copyProperties(userInputVo, userEntity);
+
+        /*userInputVo.getRoles().forEach(roleInputVo -> {
+            RoleEntity roleEntity = new RoleEntity();
+            BeanUtils.copyProperties(roleInputVo, roleEntity);
+            roleEntities.add(roleEntity);
+        });
+
+        userEntity.setRoles(roleEntities);*/
+        try {
+            userManagementRepository.save(userEntity);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

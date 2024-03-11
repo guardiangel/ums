@@ -14,8 +14,8 @@ CREATE SCHEMA IF NOT EXISTS `ums` DEFAULT CHARACTER SET utf8;
 DROP TABLE IF EXISTS `ums`.`last_visit`;
 CREATE TABLE `ums`.`last_visit` (
   `id` varchar(45) NOT NULL,
-  `in` int DEFAULT NULL,
-  `out` int DEFAULT NULL,
+  `in` BIGINT DEFAULT NULL,
+  `out` BIGINT DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -33,7 +33,7 @@ CREATE TABLE `ums`.`users` (
   `name` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
-  `created` int NOT NULL,
+  `created` BIGINT NOT NULL,
   `last_visit_id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_key` (`email`) USING BTREE,

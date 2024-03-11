@@ -24,12 +24,16 @@ public class UserEntity {
     @Column(name = "email", nullable = true)
     private String email;
 
+    @Column(name = "password", nullable = true)
+    private String password;
+
     @Column(name = "created", nullable = true)
     private Long created;
 
     @Column(name = "last_visit_id")
     private String last_visit_id;
 
+    @Transient
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_has_roles",

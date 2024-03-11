@@ -1,14 +1,18 @@
 package org.ac.cst8277.sun.guiquan.ums.controllers;
 
 import jakarta.annotation.Resource;
+import org.ac.cst8277.sun.guiquan.ums.entities.RoleEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserTokenEntity;
+import org.ac.cst8277.sun.guiquan.ums.requestvo.UserInputVo;
 import org.ac.cst8277.sun.guiquan.ums.services.UserManagementService;
+import org.ac.cst8277.sun.guiquan.ums.utils.JSONResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -18,28 +22,62 @@ public class UserManagementController {
     @Resource(name = "userManagementService")
     private UserManagementService userManagementService;
 
+    @Resource(name = "jsonResult")
+    private JSONResult jsonResult;
+
     @GetMapping("/generateTokenByUserId")
-    public ResponseEntity<UserTokenEntity> generateTokenByUserId(@RequestParam("userId") String userId) {
+    public JSONResult<Object> generateTokenByUserId(@RequestParam("userId") String userId) {
         UserTokenEntity userTokenEntity = new UserTokenEntity();
         try {
             userTokenEntity = userManagementService.generateTokenByUserId(userId);
-            return ResponseEntity.status(HttpStatus.OK).body(userTokenEntity);
+            return jsonResult.success(HttpStatus.OK.value(), userTokenEntity);
         } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    e.getMessage());
+            return jsonResult.error(HttpStatus.NOT_FOUND.value(), e.getMessage());
         }
     }
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<UserEntity>> getAllUsers(@RequestHeader("token") String token) {
-        System.err.println("token=" + token);
+    public JSONResult<Object> getAllUsers(@RequestHeader("token") String token) {
         boolean flag = userManagementService.verifyToken(token);
         if (flag) {
             List<UserEntity> userEntities = userManagementService.getAllUser();
-            return ResponseEntity.status(HttpStatus.OK).body(userEntities);
+            return jsonResult.success(HttpStatus.OK.value(), userEntities);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+            return jsonResult.error(HttpStatus.UNAUTHORIZED.value(),
                     "The current token is not valid.");
+        }
+    }
+
+    @GetMapping("/getAllRoles")
+    public JSONResult<Object> getAllRoles(@RequestHeader("token") String token) {
+        boolean flag = userManagementService.verifyToken(token);
+        if (flag) {
+            List<RoleEntity> userEntities = userManagementService.getAllRoles();
+            return jsonResult.success(HttpStatus.OK.value(), userEntities);
+        } else {
+            return jsonResult.error(HttpStatus.UNAUTHORIZED.value(),
+                    "The current token is not valid.");
+        }
+    }
+
+    @PostMapping("/addNewUser")
+    public JSONResult<Object> addNewUser(@RequestHeader("token") String token,
+                                         @RequestBody UserInputVo userInputVo) {
+
+        userInputVo.setCreated(new Date().getTime());
+        System.err.println(new Date().getTime());
+        boolean flag = userManagementService.verifyToken(token);
+        if (flag) {
+            try {
+                boolean addNewUserFlag = userManagementService.saveCascade(userInputVo);
+                return jsonResult.success(HttpStatus.OK.value(), "Add a new user successfully.");
+            } catch (RuntimeException e) {
+                return jsonResult.error(HttpStatus.BAD_GATEWAY.value(),
+                        e.getMessage());
+            }
+        } else {
+            return jsonResult.error(HttpStatus.UNAUTHORIZED.value(),
+                    "The current token is not valid. can't add a new user.");
         }
     }
 

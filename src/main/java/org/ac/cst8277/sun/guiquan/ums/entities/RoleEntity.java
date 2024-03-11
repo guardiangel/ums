@@ -23,7 +23,7 @@ public class RoleEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
-    Set<UserEntity> users;
+//    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+//    Set<UserEntity> users;
 
 }
