@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "5a2d8b82-0991-45d3-aa5b-bc4e75c391b6",
+		"name": "ums",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19509616"
+	},
+	"item": [
+		{
+			"name": "localhost:9000/generateTokenByUserId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9000/generateTokenByUserId?userId=339282f1-8c05-4356-90b6-d5b10c4aeb55",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"generateTokenByUserId"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "339282f1-8c05-4356-90b6-d5b10c4aeb55"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/getAllUsers",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:9000/getAllUsers",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"getAllUsers"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "2222",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/getAllRoles",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:9000/getAllRoles",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"getAllRoles"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "2222",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/addNewUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"GuiquanSun1\",\r\n    \"email\":\"guiquansun1@gmail.com\",\r\n    \"password\":\"123456\",    \r\n    \"roles\":[\r\n        {\r\n            \"id\":\"4554e62a-670c-4ccd-a4e1-4900a5ed5911\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/addNewUser",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"addNewUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9000deleteUser",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"61309ddf-0429-42f1-97fa-8248c5cd6974\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/deleteUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"deleteUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/getUserTokenByTokenId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:9000/getUserTokenByTokenId",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"getUserTokenByTokenId"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

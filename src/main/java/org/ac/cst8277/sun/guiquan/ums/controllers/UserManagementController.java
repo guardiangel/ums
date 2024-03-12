@@ -34,6 +34,18 @@ public class UserManagementController {
         }
     }
 
+    @GetMapping("/getUserTokenByTokenId")
+    public JSONResult<Object> getUserByToken(@RequestHeader("token") String token) {
+        UserTokenEntity userTokenEntity = new UserTokenEntity();
+        try {
+            userTokenEntity = userManagementService.getUserTokenByTokenId(token);
+            return jsonResult.success(HttpStatus.OK.value(), userTokenEntity);
+        } catch (RuntimeException e) {
+            return jsonResult.error(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
+    }
+
+
     @GetMapping("/getAllUsers")
     public JSONResult<Object> getAllUsers(@RequestHeader("token") String token) {
         boolean flag = userManagementService.verifyToken(token);
@@ -66,7 +78,8 @@ public class UserManagementController {
         boolean flag = userManagementService.verifyToken(token);
         if (flag) {
             try {
-                UserEntity userEntity = userManagementService.saveCascade(userInputVo);
+                UserEntity userEntity
+                        = userManagementService.saveUserCascade(userInputVo);
                 return jsonResult.success(HttpStatus.OK.value(),
                         "Add a new user successfully.", userEntity);
             } catch (RuntimeException e) {

@@ -61,6 +61,8 @@ CREATE TABLE `ums`.`user_token` (
   UNIQUE KEY `token_UNIQUE` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `ums`.`user_token` VALUES ('339282f1-8c05-4356-90b6-d5b10c4aeb55','39f3b313-9f55-4acb-80d6-80b3d84838fb');
+
 
 INSERT INTO `ums`.`last_visit` (`id`, `in`, `out`) VALUES
 ('64099be3-d57a-4e1d-8aed-6bd82cb6fc95', '1604249194', '1604249224'),

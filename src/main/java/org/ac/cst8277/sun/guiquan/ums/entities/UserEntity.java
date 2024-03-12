@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.context.annotation.Lazy;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -33,11 +34,10 @@ public class UserEntity {
     @Column(name = "last_visit_id")
     private String last_visit_id;
 
-    @Transient
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_has_roles",
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    Set<RoleEntity> roles;
+    Set<RoleEntity> roles = new HashSet<>();
 }

@@ -7,6 +7,7 @@ import org.ac.cst8277.sun.guiquan.ums.entities.UserTokenEntity;
 import org.ac.cst8277.sun.guiquan.ums.repositories.RoleRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserManagementRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserTokenRepository;
+import org.ac.cst8277.sun.guiquan.ums.requestvo.RoleInputVo;
 import org.ac.cst8277.sun.guiquan.ums.requestvo.UserInputVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -61,25 +62,26 @@ public class UserManagementService {
         return userTokenEntity != null;
     }
 
-    public UserEntity saveCascade(UserInputVo userInputVo) {
+    public UserEntity saveUserCascade(UserInputVo userInputVo) {
 
-        UserEntity userEntity = new UserEntity();
-        Set<RoleEntity> roleEntities = new HashSet<>();
+        final UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userInputVo, userEntity);
 
-        /*userInputVo.getRoles().forEach(roleInputVo -> {
-            RoleEntity roleEntity = new RoleEntity();
-            BeanUtils.copyProperties(roleInputVo, roleEntity);
-            roleEntities.add(roleEntity);
-        });
 
-        userEntity.setRoles(roleEntities);*/
+        userInputVo.getRoles().forEach((RoleInputVo roleInputVo) -> {
+            Optional<RoleEntity> roleEntityOptional
+                    = roleRepository.findById(roleInputVo.getId());
+            if (roleEntityOptional.isPresent()) {
+                userEntity.getRoles().add(roleEntityOptional.get());
+            }
+        });
+        UserEntity result;
         try {
-            userEntity = userManagementRepository.save(userEntity);
+            result = userManagementRepository.save(userEntity);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return userEntity;
+        return result;
     }
 
     public boolean deleteCascade(UserInputVo userInputVo) {
@@ -90,5 +92,9 @@ public class UserManagementService {
         } else {
             throw new RuntimeException("Can't find the user with id:" + userInputVo.getId());
         }
+    }
+
+    public UserTokenEntity getUserTokenByTokenId(String token) {
+        return userTokenRepository.getUserTokenEntityByToken(token);
     }
 }

@@ -1,9 +1,11 @@
 package org.ac.cst8277.sun.guiquan.ums.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -23,7 +25,8 @@ public class RoleEntity {
     @Column(name = "description")
     private String description;
 
-//    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-//    Set<UserEntity> users;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    Set<UserEntity> users = new HashSet<>();
 
 }
