@@ -25,8 +25,8 @@ public class RoleEntity {
     @Column(name = "description")
     private String description;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-    Set<UserEntity> users = new HashSet<>();
+//    @JsonIgnore
+//    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+//    Set<UserEntity> users = new HashSet<>();
 
 }

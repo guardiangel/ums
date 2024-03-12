@@ -34,6 +34,7 @@ public class UserEntity {
     @Column(name = "last_visit_id")
     private String last_visit_id;
 
+    //can't use cascade = CascadeType.ALL since we don't need to mantain the roles table at the same time.
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_has_roles",
