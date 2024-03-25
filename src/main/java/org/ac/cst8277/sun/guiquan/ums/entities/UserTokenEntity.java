@@ -20,5 +20,9 @@ public class UserTokenEntity {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "duration")
+    private Long duration;
 
+    @Column(name = "issue_at")
+    private Long issueAt;
 }

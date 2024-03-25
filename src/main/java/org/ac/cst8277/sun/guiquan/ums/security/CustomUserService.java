@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("cumtomerUserService")
-public class CumtomerUserService implements ReactiveUserDetailsService {
+@Service("customUserService")
+public class CustomUserService implements ReactiveUserDetailsService {
 
     @Resource(name = "userManagementRepository")
     private UserManagementRepository userManagementRepository;

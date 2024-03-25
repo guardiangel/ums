@@ -51,15 +51,4 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    MapReactiveUserDetailsService userDetailsService() {
-//        var user = User.builder()
-//                .username("Guiquan Sun")
-//                .password(passwordEncoder().encode("123456"))
-//                .roles("USER")
-//                .build();
-//        return new MapReactiveUserDetailsService(user);
-//    }
-
-
 }

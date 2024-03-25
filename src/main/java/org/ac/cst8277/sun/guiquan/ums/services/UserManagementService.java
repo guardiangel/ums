@@ -1,22 +1,37 @@
 package org.ac.cst8277.sun.guiquan.ums.services;
 
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.ac.cst8277.sun.guiquan.ums.entities.RoleEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserTokenEntity;
+import org.ac.cst8277.sun.guiquan.ums.exceptions.CustomException;
 import org.ac.cst8277.sun.guiquan.ums.repositories.RoleRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserManagementRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserTokenRepository;
 import org.ac.cst8277.sun.guiquan.ums.requestvo.RoleInputVo;
 import org.ac.cst8277.sun.guiquan.ums.requestvo.UserInputVo;
+import org.ac.cst8277.sun.guiquan.ums.security.CustomUserService;
+import org.ac.cst8277.sun.guiquan.ums.security.TokenProvider;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service("userManagementService")
+@RequiredArgsConstructor
 public class UserManagementService {
+
+    @Value("${jwt.token-expiration-seconds}")
+    private long tokenExpiration;
     @Resource(name = "userManagementRepository")
     private UserManagementRepository userManagementRepository;
 
@@ -26,6 +41,10 @@ public class UserManagementService {
     @Resource(name = "roleRepository")
     private RoleRepository roleRepository;
 
+    private final CustomUserService userDetailsService;
+
+    private final TokenProvider tokenProvider;
+
     public List<UserEntity> getAllUser() {
         List<UserEntity> userEntities = userManagementRepository.getAllUser();
         return userEntities;
@@ -34,36 +53,6 @@ public class UserManagementService {
     public List<RoleEntity> getAllRoles() {
         List<RoleEntity> roleEntities = (List<RoleEntity>) roleRepository.findAll();
         return roleEntities;
-    }
-
-    /**
-     * get user token. If not exist, create it.
-     *
-     * @param userId
-     * @return
-     */
-    public UserTokenEntity generateTokenByUserId(String userId) {
-        Optional<UserEntity> userEntity = userManagementRepository.findById(userId);
-        //if user does not exist, throw exception
-        if (!userEntity.isPresent()) {
-            throw new RuntimeException("Can't find the user by the current userId");
-        }
-        UserTokenEntity userTokenEntity = userTokenRepository.getTokenById(userId);
-        if (ObjectUtils.isEmpty(userTokenEntity)) {
-
-
-            userTokenEntity = new UserTokenEntity(userId,
-                    UUID.randomUUID().toString());
-
-
-            userTokenRepository.save(userTokenEntity);
-        }
-        return userTokenEntity;
-    }
-
-    public boolean verifyToken(String token) {
-        UserTokenEntity userTokenEntity = userTokenRepository.getUserTokenEntityByToken(token);
-        return userTokenEntity != null;
     }
 
     public UserEntity saveUserCascade(UserInputVo userInputVo) {
@@ -99,6 +88,56 @@ public class UserManagementService {
     }
 
     public UserTokenEntity getUserTokenByTokenId(String token) {
-        return userTokenRepository.getUserTokenEntityByToken(token);
+
+        UserTokenEntity userTokenEntity
+                = userTokenRepository.getUserTokenEntityByToken(token);
+
+        if (userTokenEntity != null) {
+            Long currentTimeStamp = new Date().getTime();
+            if (currentTimeStamp - userTokenEntity.getIssueAt()
+                    > userTokenEntity.getDuration()) {
+                throw new CustomException(HttpStatus.UNAUTHORIZED.value(),
+                        "The current toke has expired, please get new one from ums application.");
+            }
+
+        } else {
+            throw new CustomException(HttpStatus.UNAUTHORIZED.value(),
+                    "Invalid token, can't find a user based on the current token");
+        }
+
+        return userTokenEntity;
+    }
+
+    public String generateTokenByUsername(String name) {
+
+        String token = null;
+        try {
+            //get token from table first
+            UserEntity userEntity = userManagementRepository.findUserEntityByName(name);
+            if (userEntity == null) {
+                throw new RuntimeException("Can't find a user in the database with name:" + name);
+            }
+            UserTokenEntity existUserTokenEntity
+                    = userTokenRepository.getTokenById(userEntity.getId());
+            //if token is not null and still valid
+            if (existUserTokenEntity != null
+                    && (new Date().getTime() - existUserTokenEntity.getIssueAt()
+                    < existUserTokenEntity.getDuration())) {
+                token = existUserTokenEntity.getToken();
+            } else {
+                Mono<UserDetails> userDetailsMono = userDetailsService.findByUsername(name);
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Future future = executorService.submit(() -> userDetailsMono.block());
+                UserDetails userDetails = (UserDetails) future.get();
+                token = tokenProvider.generateToken(userDetails);
+                //Save generated token to database
+                UserTokenEntity userTokenEntity = new UserTokenEntity(userEntity.getId(),
+                        token, tokenExpiration, new Date().getTime());
+                userTokenRepository.save(userTokenEntity);
+            }
+        } catch (RuntimeException | InterruptedException | ExecutionException e) {
+            token = e.getMessage();
+        }
+        return token;
     }
 }
