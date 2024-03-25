@@ -6,6 +6,7 @@ import org.ac.cst8277.sun.guiquan.ums.entities.RoleEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserTokenEntity;
 import org.ac.cst8277.sun.guiquan.ums.requestvo.UserInputVo;
+import org.ac.cst8277.sun.guiquan.ums.security.CumtomerUserService;
 import org.ac.cst8277.sun.guiquan.ums.security.LoginResponse;
 import org.ac.cst8277.sun.guiquan.ums.security.TokenProvider;
 import org.ac.cst8277.sun.guiquan.ums.services.UserManagementService;
@@ -38,7 +39,7 @@ public class UserManagementController {
     private JSONResult jsonResult;
 
     private final PasswordEncoder passwordEncoder;
-    private final ReactiveUserDetailsService userDetailsService;
+    private final CumtomerUserService userDetailsService;
     private final TokenProvider tokenProvider;
 
     /**
@@ -54,28 +55,18 @@ public class UserManagementController {
 
         if (principal != null) {
             String name = principal.getAttribute("name");
-            System.err.println("principal=" + principal);
-            System.err.println("name=" + name);
-
-            Mono<LoginResponse> userDetailsMono = userDetailsService.findByUsername(name)
-                    .filter(u -> passwordEncoder.matches("123456", u.getPassword()))
-                    .map(tokenProvider::generateToken)
-                    .map(LoginResponse::new)
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)));
-
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            Future future = executorService.submit(() -> userDetailsMono.block());
-            LoginResponse loginResponse;
+            String token = null;
             try {
-                loginResponse = (LoginResponse) future.get();
-                System.err.println("loginResponse=" + loginResponse);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
+                Mono<UserDetails> userDetailsMono = userDetailsService.findByUsername(name);
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Future future = executorService.submit(() -> userDetailsMono.block());
+                UserDetails userDetails = (UserDetails) future.get();
+                token = tokenProvider.generateToken(userDetails);
+            } catch (InterruptedException  | ExecutionException e) {
+                token = e.getMessage();
+                hashMap.put("name", token);
             }
-
-            hashMap.put("name", loginResponse == null ? name : loginResponse.token());
+            hashMap.put("name", token == null ? name : token);
         } else {
             hashMap.put("name", "NotLogin");
         }

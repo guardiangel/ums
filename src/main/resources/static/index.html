@@ -12,7 +12,9 @@
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1>Demo</h1>
+<div style="margin: auto;  width: 50%;  border: 3px solid green;  padding: 10px;">
+    <h1>Login via GitHub Demo</h1>
+</div>
 <div class="container">
     <div class="container unauthenticated">
         With GitHub: <a style="color: blue;font-size: 2rem" href="/oauth2/authorization/github">click to login</a>
@@ -26,7 +28,7 @@
 <script type="text/javascript">
     alert("Invoke generateToken method automatically.");
     $.get("/generateToken", function (data) {
-        if(data.name ==="NotLogin") {
+        if (data.name === "NotLogin") {
             $("#user").html("You haven't logined the system, please click above 'click to login' to login first.");
             $(".unauthenticated").show()
             $(".authenticated").show()
