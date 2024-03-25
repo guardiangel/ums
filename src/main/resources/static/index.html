@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Demo</title>
+    <title>Login via GitHub Demo</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width"/>
     <base href="/"/>
@@ -15,19 +15,26 @@
 <h1>Demo</h1>
 <div class="container">
     <div class="container unauthenticated">
-        With GitHub: <a href="/oauth2/authorization/github">click here</a>
+        With GitHub: <a style="color: blue;font-size: 2rem" href="/oauth2/authorization/github">click to login</a>
     </div>
     <div class="container authenticated" style="display:none">
-        Logged in as: <span id="user"></span>
+        You login token is : <span style="color: red" id="user"></span>
     </div>
 </div>
 </body>
 </html>
 <script type="text/javascript">
-    alert("aaaa")
-    $.get("/user", function (data) {
-        $("#user").html(data.name);
-        $(".unauthenticated").hide()
-        $(".authenticated").show()
+    alert("Invoke generateToken method automatically.");
+    $.get("/generateToken", function (data) {
+        if(data.name ==="NotLogin") {
+            $("#user").html("You haven't logined the system, please click above 'click to login' to login first.");
+            $(".unauthenticated").show()
+            $(".authenticated").show()
+        } else {
+            $("#user").html(data.name);
+            $(".unauthenticated").hide()
+            $(".authenticated").show()
+        }
     });
+
 </script>

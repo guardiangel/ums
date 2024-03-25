@@ -12,5 +12,4 @@ import java.util.List;
 public interface UserManagementRepository extends CrudRepository<UserEntity, String> {
     @Query(value = QueryConstants.GET_ALL_USERS, nativeQuery = false)
     List<UserEntity> getAllUser();
-
 }
