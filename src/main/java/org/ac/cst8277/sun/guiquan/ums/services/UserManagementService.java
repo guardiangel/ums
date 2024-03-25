@@ -50,8 +50,12 @@ public class UserManagementService {
         }
         UserTokenEntity userTokenEntity = userTokenRepository.getTokenById(userId);
         if (ObjectUtils.isEmpty(userTokenEntity)) {
+
+
             userTokenEntity = new UserTokenEntity(userId,
                     UUID.randomUUID().toString());
+
+
             userTokenRepository.save(userTokenEntity);
         }
         return userTokenEntity;
