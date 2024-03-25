@@ -34,7 +34,7 @@ public class CustomUserService implements ReactiveUserDetailsService {
                     = new ArrayList<>();
 
             for (RoleEntity roleEntity : userEntity.getRoles()) {
-                authorities.add(new SimpleGrantedAuthority(roleEntity.getName()));
+                authorities.add(new SimpleGrantedAuthority("ROLE_"+roleEntity.getName()));
             }
             return new User(
                     userEntity.getName(),

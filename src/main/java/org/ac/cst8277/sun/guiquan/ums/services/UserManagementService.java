@@ -5,13 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.ac.cst8277.sun.guiquan.ums.entities.RoleEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserEntity;
 import org.ac.cst8277.sun.guiquan.ums.entities.UserTokenEntity;
-import org.ac.cst8277.sun.guiquan.ums.exceptions.CustomException;
 import org.ac.cst8277.sun.guiquan.ums.repositories.RoleRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserManagementRepository;
 import org.ac.cst8277.sun.guiquan.ums.repositories.UserTokenRepository;
 import org.ac.cst8277.sun.guiquan.ums.requestvo.RoleInputVo;
 import org.ac.cst8277.sun.guiquan.ums.requestvo.UserInputVo;
 import org.ac.cst8277.sun.guiquan.ums.security.CustomUserService;
+import org.ac.cst8277.sun.guiquan.ums.security.JwtService;
 import org.ac.cst8277.sun.guiquan.ums.security.TokenProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +44,9 @@ public class UserManagementService {
     private final CustomUserService userDetailsService;
 
     private final TokenProvider tokenProvider;
+
+    @Resource(name = "jwtService")
+    private final JwtService jwtService;
 
     public List<UserEntity> getAllUser() {
         List<UserEntity> userEntities = userManagementRepository.getAllUser();
@@ -97,6 +100,9 @@ public class UserManagementService {
             if ((currentTimeStamp - userTokenEntity.getIssueAt()) / 1000
                     > userTokenEntity.getDuration()) {
                 userTokenEntity = null;
+            } else {
+                List<String> roleList = jwtService.extractRoles(token);
+                userTokenEntity.setRoleList(roleList);
             }
         }
         return userTokenEntity;
@@ -126,7 +132,7 @@ public class UserManagementService {
                 token = tokenProvider.generateToken(userDetails);
                 //Save generated token to database
                 UserTokenEntity userTokenEntity = new UserTokenEntity(userEntity.getId(),
-                        token, tokenExpiration * 1000, new Date().getTime());
+                        token, tokenExpiration, new Date().getTime());
                 userTokenRepository.save(userTokenEntity);
             }
         } catch (RuntimeException | InterruptedException | ExecutionException e) {

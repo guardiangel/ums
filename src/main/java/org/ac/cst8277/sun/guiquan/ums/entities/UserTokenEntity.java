@@ -1,12 +1,12 @@
 package org.ac.cst8277.sun.guiquan.ums.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,4 +25,14 @@ public class UserTokenEntity {
 
     @Column(name = "issue_at")
     private Long issueAt;
+
+    public UserTokenEntity(String userId, String token, Long duration, Long issueAt) {
+        this.userId = userId;
+        this.token = token;
+        this.duration = duration;
+        this.issueAt = issueAt;
+    }
+
+    @Transient
+    private List<String> roleList = new ArrayList<>();
 }

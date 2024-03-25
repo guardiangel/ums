@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-@Service
-class JwtService implements TokenProvider {
+@Service("jwtService")
+public class JwtService implements TokenProvider {
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -29,7 +29,7 @@ class JwtService implements TokenProvider {
         return extractClaim(jwt, Claims::getSubject);
     }
 
-    List<String> extractRoles(String jwt) {
+    public List<String> extractRoles(String jwt) {
         return extractClaim(jwt, claims -> (List<String>) claims.get("roles"));
     }
 

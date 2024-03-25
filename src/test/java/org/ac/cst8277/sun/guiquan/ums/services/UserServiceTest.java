@@ -31,7 +31,7 @@ public class UserServiceTest {
     public void getUserTokenByTokenId() {
         UserTokenEntity userTokenEntity
                 = userManagementService
-                .getUserTokenByTokenId("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlJJQkVSIl0sImlhdCI6MTcxMTM5NTg4MywiZXhwIjoxNzExMzk2NzgzfQ.H3TsB29Z52gXAU4Fn84fUhAsY9XtRvYgLuWLadU-3HU");
+                .getUserTokenByTokenId("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlNVQlNDUklCRVIiXSwiaWF0IjoxNzExNDA1MTEwLCJleHAiOjE3MTE0MDYwMTB9.ZaL2QjWIe83TCOEgbMcQVWNIN_cxiRAjwej6UmemJGg");
         if (userTokenEntity != null) {
             System.err.println(userTokenEntity);
         }
