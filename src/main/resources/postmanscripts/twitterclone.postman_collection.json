@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "b19c30c9-d76c-435f-8921-657ea505d37a",
+		"name": "twitterclone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19509616"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8081/getMessagesByProducerId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlJJQkVSIl0sImlhdCI6MTcxMTM5NTg4MywiZXhwIjoxNzExMzk2NzgzfQ.H3TsB29Z52gXAU4Fn84fUhAsY9XtRvYgLuWLadU-3HU",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlJJQkVSIl0sImlhdCI6MTcxMTM5NTg4MywiZXhwIjoxNzExMzk2NzgzfQ.H3TsB29Z52gXAU4Fn84fUhAsY9XtRvYgLuWLadU-3HU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/getMessagesByProducerId?userId=bcc9cd9e-207c-44f9-842e-ec90421fdab2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"getMessagesByProducerId"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "bcc9cd9e-207c-44f9-842e-ec90421fdab2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/getAllMessages",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlJJQkVSIl0sImlhdCI6MTcxMTM5NzQ1NCwiZXhwIjoxNzExMzk4MzU0fQ.-Omboo1SXfUyoPm6yfzz1-ZdJAOTIV03J4yq2lQh1BM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/getAllMessages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"getAllMessages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/getMessagesBySubscriberId?userId=a19d4c5d0cfe",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlJJQkVSIl0sImlhdCI6MTcxMTM5NzQ1NCwiZXhwIjoxNzExMzk4MzU0fQ.-Omboo1SXfUyoPm6yfzz1-ZdJAOTIV03J4yq2lQh1BM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/getMessagesBySubscriberId?userId=eda55c5a-9552-46ed-945d-a19d4c5d0cfe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"getMessagesBySubscriberId"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "eda55c5a-9552-46ed-945d-a19d4c5d0cfe"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

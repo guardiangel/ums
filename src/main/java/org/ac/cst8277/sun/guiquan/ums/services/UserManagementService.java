@@ -91,20 +91,14 @@ public class UserManagementService {
 
         UserTokenEntity userTokenEntity
                 = userTokenRepository.getUserTokenEntityByToken(token);
-
         if (userTokenEntity != null) {
             Long currentTimeStamp = new Date().getTime();
-            if (currentTimeStamp - userTokenEntity.getIssueAt()
+            //change the millisecond to second
+            if ((currentTimeStamp - userTokenEntity.getIssueAt()) / 1000
                     > userTokenEntity.getDuration()) {
-                throw new CustomException(HttpStatus.UNAUTHORIZED.value(),
-                        "The current toke has expired, please get new one from ums application.");
+                userTokenEntity = null;
             }
-
-        } else {
-            throw new CustomException(HttpStatus.UNAUTHORIZED.value(),
-                    "Invalid token, can't find a user based on the current token");
         }
-
         return userTokenEntity;
     }
 
@@ -121,7 +115,7 @@ public class UserManagementService {
                     = userTokenRepository.getTokenById(userEntity.getId());
             //if token is not null and still valid
             if (existUserTokenEntity != null
-                    && (new Date().getTime() - existUserTokenEntity.getIssueAt()
+                    && ((new Date().getTime() - existUserTokenEntity.getIssueAt()) / 1000
                     < existUserTokenEntity.getDuration())) {
                 token = existUserTokenEntity.getToken();
             } else {
@@ -132,7 +126,7 @@ public class UserManagementService {
                 token = tokenProvider.generateToken(userDetails);
                 //Save generated token to database
                 UserTokenEntity userTokenEntity = new UserTokenEntity(userEntity.getId(),
-                        token, tokenExpiration, new Date().getTime());
+                        token, tokenExpiration * 1000, new Date().getTime());
                 userTokenRepository.save(userTokenEntity);
             }
         } catch (RuntimeException | InterruptedException | ExecutionException e) {

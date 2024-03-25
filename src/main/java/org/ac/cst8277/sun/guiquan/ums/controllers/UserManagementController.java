@@ -24,7 +24,6 @@ public class UserManagementController {
     private JSONResult jsonResult;
 
 
-
     /**
      * principal=Name: [3304152],
      * Granted Authorities: [[OAUTH2_USER, SCOPE_read:user]],
@@ -50,19 +49,17 @@ public class UserManagementController {
 
     @GetMapping("/getUserTokenByTokenId")
     public JSONResult<Object> getUserByToken(@RequestHeader("token") String token) {
-
         UserTokenEntity userTokenEntity = null;
-        try {
-            userTokenEntity = userManagementService.getUserTokenByTokenId(token);
+        userTokenEntity = userManagementService.getUserTokenByTokenId(token);
+        if (userTokenEntity != null) {
             return jsonResult.success(HttpStatus.OK.value(), userTokenEntity);
-        } catch (CustomException e) {
-            return jsonResult.error(e.getCode(), e.getMessage());
+        } else {
+            return jsonResult.success(HttpStatus.UNAUTHORIZED.value(), userTokenEntity);
         }
     }
 
     @GetMapping("/getAllUsers")
     public JSONResult<Object> getAllUsers() {
-
         List<UserEntity> userEntities = userManagementService.getAllUser();
         return jsonResult.success(HttpStatus.OK.value(), userEntities);
     }

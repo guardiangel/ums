@@ -7,46 +7,25 @@
 	},
 	"item": [
 		{
-			"name": "localhost:9000/generateTokenByUserId",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:9000/generateTokenByUserId?userId=339282f1-8c05-4356-90b6-d5b10c4aeb55",
-					"host": [
-						"localhost"
-					],
-					"port": "9000",
-					"path": [
-						"generateTokenByUserId"
-					],
-					"query": [
-						{
-							"key": "userId",
-							"value": "339282f1-8c05-4356-90b6-d5b10c4aeb55"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:9000/getAllUsers",
+			"name": "localhost:8080/getAllUsers",
 			"request": {
 				"method": "GET",
 				"header": [
 					{
-						"key": "token",
-						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlJJQkVSIl0sImlhdCI6MTcxMTM5MzYxNCwiZXhwIjoxNzExMzk0NTE0fQ.0ggXaqMXf5xWpVUtcs1y5Ga_4dbG9gzhPCRwuJdb-xw",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "localhost:9000/getAllUsers",
+					"raw": "127.0.0.1:8080/getAllUsers",
 					"host": [
-						"localhost"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
-					"port": "9000",
+					"port": "8080",
 					"path": [
 						"getAllUsers"
 					],
@@ -62,7 +41,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:9000/getAllRoles",
+			"name": "localhost:8080/getAllRoles",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -73,11 +52,11 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:9000/getAllRoles",
+					"raw": "localhost:8080/getAllRoles",
 					"host": [
 						"localhost"
 					],
-					"port": "9000",
+					"port": "8080",
 					"path": [
 						"getAllRoles"
 					],
@@ -93,19 +72,19 @@
 			"response": []
 		},
 		{
-			"name": "localhost:9000/addNewUser",
+			"name": "localhost:8080/addNewUser",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
-						"key": "token",
-						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIkNFUiIsIlJJQkVSIl0sImlhdCI6MTcxMTM4OTY4NCwiZXhwIjoxNzExMzkwNTg0fQ.evIGwPmjknhNlQzeph-VK-okPPSTQbnVMoKyxCRsHUI",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\":\"GuiquanSun1\",\r\n    \"email\":\"guiquansun1@gmail.com\",\r\n    \"password\":\"123456\",    \r\n    \"roles\":[\r\n        {\r\n            \"id\":\"4554e62a-670c-4ccd-a4e1-4900a5ed5911\"\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"name\":\"GuiquanSun4\",\r\n    \"email\":\"guiquansun4@gmail.com\",\r\n    \"password\":\"123456\",    \r\n    \"roles\":[\r\n        {\r\n            \"id\":\"4554e62a-670c-4ccd-a4e1-4900a5ed5911\"\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -113,11 +92,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:9000/addNewUser",
+					"raw": "localhost:8080/addNewUser",
 					"host": [
 						"localhost"
 					],
-					"port": "9000",
+					"port": "8080",
 					"path": [
 						"addNewUser"
 					]
@@ -126,19 +105,19 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:9000deleteUser",
+			"name": "http://localhost:8080/deleteUser",
 			"request": {
 				"method": "DELETE",
 				"header": [
 					{
-						"key": "token",
-						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIkNFUiIsIlJJQkVSIl0sImlhdCI6MTcxMTM5MjEyNSwiZXhwIjoxNzExMzkzMDI1fQ.H6BveGLRi0dMHecvyi0VKi4be54PYGxafmhachDY4uA",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\":\"61309ddf-0429-42f1-97fa-8248c5cd6974\"\r\n}",
+					"raw": "{\r\n    \"id\":\"b1508bbd-5a73-47ee-9e57-0fbc1150ccd8\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -146,38 +125,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/deleteUser",
+					"raw": "http://localhost:8080/deleteUser",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "9000",
+					"port": "8080",
 					"path": [
 						"deleteUser"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:9000/getUserTokenByTokenId",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "token",
-						"value": "39f3b313-9f55-4acb-80d6-80b3d84838fb",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "localhost:9000/getUserTokenByTokenId",
-					"host": [
-						"localhost"
-					],
-					"port": "9000",
-					"path": [
-						"getUserTokenByTokenId"
 					]
 				}
 			},

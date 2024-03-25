@@ -29,17 +29,19 @@ CREATE TABLE `ums`.`roles` (
 
 DROP TABLE IF EXISTS `ums`.`users`;
 CREATE TABLE `ums`.`users` (
-  `id` varchar(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `created` BIGINT NOT NULL,
-  `last_visit_id` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email_key` (`email`) USING BTREE,
-  KEY `fk_users_last_visit1_idx` (`last_visit_id`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`last_visit_id`) REFERENCES `last_visit` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+   `id` varchar(45) NOT NULL,
+   `name` varchar(45) NOT NULL,
+   `email` varchar(45) NOT NULL,
+   `password` varchar(45) NOT NULL,
+   `created` bigint NOT NULL,
+   `last_visit_id` varchar(45) DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `email_key` (`email`) USING BTREE,
+   UNIQUE KEY `name_UNIQUE` (`name`),
+   KEY `fk_users_last_visit1_idx` (`last_visit_id`),
+   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`last_visit_id`) REFERENCES `last_visit` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS `ums`.`users_has_roles`;
 CREATE TABLE `ums`.`users_has_roles` (

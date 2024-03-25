@@ -27,11 +27,13 @@ public class UserServiceTest {
         });
     }
 
-//    @Test
-//    public void getUserTokenByTokenId() {
-//        UserTokenEntity userTokenEntity
-//                = userManagementService
-//                .getUserTokenByTokenId("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIkNFUiIsIlJJQkVSIl0sImlhdCI6MTcxMTM4OTY4NCwiZXhwIjoxNzExMzkwNTg0fQ.evIGwPmjknhNlQzeph-VK-okPPSTQbnVMoKyxCRsHUI");
-//        System.err.println(userTokenEntity);
-//    }
+    @Test
+    public void getUserTokenByTokenId() {
+        UserTokenEntity userTokenEntity
+                = userManagementService
+                .getUserTokenByTokenId("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHdWlxdWFuIFN1biIsInJvbGVzIjpbIlJJQkVSIl0sImlhdCI6MTcxMTM5NTg4MywiZXhwIjoxNzExMzk2NzgzfQ.H3TsB29Z52gXAU4Fn84fUhAsY9XtRvYgLuWLadU-3HU");
+        if (userTokenEntity != null) {
+            System.err.println(userTokenEntity);
+        }
+    }
 }
